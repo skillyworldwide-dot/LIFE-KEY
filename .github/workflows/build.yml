@@ -1,0 +1,37 @@
+name: Build Life Key
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+      - name: Check out the project
+        uses: actions/checkout@v4
+
+      - name: Install CMake
+        run: brew install cmake
+
+      - name: Clone JUCE
+        run: git clone --branch 7.0.12 --depth 1 https://github.com/juce-framework/JUCE.git
+
+      - name: Configure
+        run: cmake -B build -G Xcode
+
+      - name: Build (Release)
+        run: cmake --build build --config Release
+
+      - name: Package installer
+        run: |
+          chmod +x packaging/make_installer.sh
+          ./packaging/make_installer.sh
+
+      - name: Upload installer as a downloadable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Life-Key-Installer
+          path: "Life Key Installer.pkg"
