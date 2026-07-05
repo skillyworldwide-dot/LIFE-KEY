@@ -25,7 +25,7 @@ public:
         currentAngle = 0.0;
         level = velocity * 0.15;
         frequency = juce::MidiMessage::getMidiNoteInHertz (midiNoteNumber);
-        angleDelta = frequency * 2.0 * juce::MathConstants<double>::pi / currentSampleRate;
+       angleDelta = frequency * 2.0 * juce::MathConstants<double>::pi / getSampleRate();
         adsr.noteOn();
     }
 
